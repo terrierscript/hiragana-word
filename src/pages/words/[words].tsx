@@ -1,4 +1,4 @@
-import { Box, Button, ButtonProps, Grid, HStack, Spinner, VStack } from '@chakra-ui/react'
+import { Box, Button, ButtonProps, Grid, HStack, Spinner, Stack, VStack } from '@chakra-ui/react'
 import Head from 'next/head'
 import React, { FC, useState } from 'react'
 // @ts-ignore
@@ -36,7 +36,7 @@ const LargeButton: FC<ButtonProps> = (props) => {
     // w={"8vmin"}
     h={"8vmin"}
     fontSize="8vmin"
-    p={10}
+    p={8}
     {...props} />
 }
 const Tite: FC<{ char: string, isActive: boolean }> = ({ char, isActive }) => {
@@ -60,19 +60,25 @@ const Tite: FC<{ char: string, isActive: boolean }> = ({ char, isActive }) => {
 const Words: FC<{ word: string }> = ({ word }) => {
   const [activeIndex, setActiveIndex] = useState(-1)
   const splitted: string[] = hepburn.splitKana(word)
-  return <Grid gridAutoColumns={`repeact(1fr, ${activeIndex + 1})`} gridAutoFlow="column" gap={2}>
-    <LargeButton size="lg" onClick={async () => {
-      // const splitWord = word.split("")
-      for (let char of splitted) {
-        setActiveIndex((value) => value + 1)
-        await speech(char)
-      }
-      setActiveIndex(-1)
-    }}>📣</LargeButton>
-    {splitted.map((char, i) => {
-      return <Tite char={char} key={i} isActive={i === activeIndex} />
-    })}
-  </Grid>
+  return <>
+    <Grid
+      // gridTemplateColumns={`repeat( ${splitted.length + 1},1fr)`}
+      gridAutoFlow="column"
+      gap={2}
+    >
+      <LargeButton size="lg" onClick={async () => {
+        // const splitWord = word.split("")
+        for (let char of splitted) {
+          setActiveIndex((value) => value + 1)
+          await speech(char)
+        }
+        setActiveIndex(-1)
+      }}>📣</LargeButton>
+      {splitted.map((char, i) => {
+        return <Tite char={char} key={i} isActive={i === activeIndex} />
+      })}
+    </Grid>
+  </>
 }
 
 const param = z.object({
@@ -90,11 +96,11 @@ export default function Home() {
         <title></title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <VStack p={10}>
-        {words.split(",").map(word => {
-          return <Words word={word} />
+      <Stack p={4}>
+        {words.split(",").map((word, i) => {
+          return <Words word={word} key={i} />
         })}
-      </VStack>
+      </Stack>
     </Box>
   )
 }
