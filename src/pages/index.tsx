@@ -3,7 +3,7 @@ import { useState } from "react"
 
 export default function Home() {
   const [value, setValue] = useState("")
-  return <Center>
+  return <Center p={4}>
     <VStack>
       <Heading size="md">ひらがなよみあげ</Heading>
       <Textarea value={value} onChange={(e) => {
