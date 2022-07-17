@@ -29,10 +29,10 @@ const speech = (word: string,
 }
 
 const LargeButton: FC<ButtonProps> = (props) => {
-  return <Button w={"10vmin"}
-    h={"10vmin"}
-    fontSize="10vmin"
-    p={12}
+  return <Button w={"8vmin"}
+    h={"8vmin"}
+    fontSize="8vmin"
+    p={10}
     {...props} />
 }
 const Tite: FC<{ char: string, isActive: boolean }> = ({ char, isActive }) => {
@@ -54,22 +54,24 @@ const Tite: FC<{ char: string, isActive: boolean }> = ({ char, isActive }) => {
 const Words: FC<{ word: string }> = ({ word }) => {
   const [activeIndex, setActiveIndex] = useState(-1)
   return <HStack>
-    <LargeButton size="lg" onClick={() => {
+    <LargeButton size="lg" onClick={async () => {
       const splitWord = word.split("")
-        // .map(c => `<p><mark name="${c}"/>${c}</p>　`)
-        .join("　")
-      console.log(splitWord)
-
-      speech(splitWord, {
-        boundary: (ev: SpeechSynthesisEvent) => {
-          setActiveIndex((value) => value + 1)
-          // setActiveIndex(ev)
-          console.log("boundary", ev)
-        },
-        end: () => {
-          setActiveIndex(-1)
-        }
-      })
+      // .map(c => `<p><mark name="${c}"/>${c}</p>　`)
+      //   .join("、　")
+      // console.log(splitWord)
+      for (let char of splitWord) {
+        setActiveIndex((value) => value + 1)
+        await speech(char)
+      }
+      setActiveIndex(-1)
+      // speech(splitWord, {
+      //   boundary: (ev: SpeechSynthesisEvent) => {
+      //     // setActiveIndex(ev)
+      //     console.log("boundary", ev)
+      //   },
+      //   end: () => {
+      //   }
+      // })
     }}>📣</LargeButton>
     {
       word.split("").map((char, i) => {
