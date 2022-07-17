@@ -1,7 +1,8 @@
-import { Box, Button, ButtonProps, HStack, VStack } from '@chakra-ui/react'
+import { Box, Button, ButtonProps, Grid, HStack, VStack } from '@chakra-ui/react'
 import Head from 'next/head'
 import React, { FC, useState } from 'react'
-
+// @ts-ignore
+import hepburn from "hepburn"
 const speech = (word: string,
   events?: {
     [key in keyof SpeechSynthesisUtteranceEventMap]?: (event: SpeechSynthesisEvent) => void
@@ -29,7 +30,8 @@ const speech = (word: string,
 }
 
 const LargeButton: FC<ButtonProps> = (props) => {
-  return <Button w={"8vmin"}
+  return <Button
+    // w={"8vmin"}
     h={"8vmin"}
     fontSize="8vmin"
     p={10}
@@ -51,34 +53,24 @@ const Tite: FC<{ char: string, isActive: boolean }> = ({ char, isActive }) => {
   </LargeButton>
 }
 
+
+
 const Words: FC<{ word: string }> = ({ word }) => {
   const [activeIndex, setActiveIndex] = useState(-1)
-  return <HStack>
+  const splitted: string[] = hepburn.splitKana(word)
+  return <Grid gridAutoColumns={`repeact(1fr, ${activeIndex + 1})`} gridAutoFlow="column" gap={2}>
     <LargeButton size="lg" onClick={async () => {
-      const splitWord = word.split("")
-      // .map(c => `<p><mark name="${c}"/>${c}</p>　`)
-      //   .join("、　")
-      // console.log(splitWord)
-      for (let char of splitWord) {
+      // const splitWord = word.split("")
+      for (let char of splitted) {
         setActiveIndex((value) => value + 1)
         await speech(char)
       }
       setActiveIndex(-1)
-      // speech(splitWord, {
-      //   boundary: (ev: SpeechSynthesisEvent) => {
-      //     // setActiveIndex(ev)
-      //     console.log("boundary", ev)
-      //   },
-      //   end: () => {
-      //   }
-      // })
     }}>📣</LargeButton>
-    {
-      word.split("").map((char, i) => {
-        return <Tite char={char} key={i} isActive={i === activeIndex} />
-      })
-    }
-  </HStack >
+    {splitted.map((char, i) => {
+      return <Tite char={char} key={i} isActive={i === activeIndex} />
+    })}
+  </Grid>
 }
 
 export default function Home() {
@@ -91,6 +83,7 @@ export default function Home() {
       <VStack p={10}>
         <Words word="はやぶさ" />
         <Words word="こまち" />
+        <Words word="ぽっちゃま" />
         <Words word="つばさ" />
       </VStack>
     </Box>
