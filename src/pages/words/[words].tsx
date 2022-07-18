@@ -96,7 +96,7 @@ export default function Home() {
         <title></title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Stack p={4}>
+      <Stack p={4} userSelect="none">
         {words.split(",").map((word, i) => {
           return <Words word={word} key={i} />
         })}
