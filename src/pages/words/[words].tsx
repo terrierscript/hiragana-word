@@ -60,25 +60,32 @@ const Tite: FC<{ char: string, isActive: boolean }> = ({ char, isActive }) => {
 const Words: FC<{ word: string }> = ({ word }) => {
   const [activeIndex, setActiveIndex] = useState(-1)
   const splitted: string[] = hepburn.splitKana(word)
-  return <>
+  return <Grid
+    border="1px solid "
+    borderRadius={"lg"}
+    borderColor="gray.200"
+    p={2}
+    gap={2}
+    gridAutoFlow="column"
+  >
+    <LargeButton size="lg" onClick={async () => {
+      // const splitWord = word.split("")
+      for (let char of splitted) {
+        setActiveIndex((value) => value + 1)
+        await speech(char)
+      }
+      setActiveIndex(-1)
+    }}>📣</LargeButton>
     <Grid
-      // gridTemplateColumns={`repeat( ${splitted.length + 1},1fr)`}
-      gridAutoFlow="column"
+      gridTemplateColumns={`repeat(4, 1fr)`}
+      // gridAutoFlow="column"
       gap={2}
     >
-      <LargeButton size="lg" onClick={async () => {
-        // const splitWord = word.split("")
-        for (let char of splitted) {
-          setActiveIndex((value) => value + 1)
-          await speech(char)
-        }
-        setActiveIndex(-1)
-      }}>📣</LargeButton>
       {splitted.map((char, i) => {
         return <Tite char={char} key={i} isActive={i === activeIndex} />
       })}
     </Grid>
-  </>
+  </Grid>
 }
 
 const param = z.object({
