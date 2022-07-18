@@ -5,6 +5,7 @@ import React, { FC, useState } from 'react'
 import hepburn from "hepburn"
 import { useRouter } from 'next/router'
 import { z } from 'zod'
+
 const speech = (word: string,
   events?: {
     [key in keyof SpeechSynthesisUtteranceEventMap]?: (event: SpeechSynthesisEvent) => void
@@ -57,7 +58,9 @@ const Tite: FC<{ char: string, isActive: boolean }> = ({ char, isActive }) => {
 
 
 
-const Words: FC<{ word: string }> = ({ word }) => {
+const Words: FC<{
+  word: string
+}> = ({ word }) => {
   const [activeIndex, setActiveIndex] = useState(-1)
   const splitted: string[] = hepburn.splitKana(word)
   return <Grid
