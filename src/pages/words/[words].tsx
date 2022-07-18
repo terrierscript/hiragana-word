@@ -1,4 +1,4 @@
-import { Box, Button, ButtonProps, Grid, HStack, Spinner, Stack, VStack } from '@chakra-ui/react'
+import { Box, Button, ButtonProps, Flex, Grid, HStack, Spinner, Stack, VStack } from '@chakra-ui/react'
 import Head from 'next/head'
 import React, { FC, useState } from 'react'
 // @ts-ignore
@@ -34,8 +34,8 @@ const speech = (word: string,
 
 const LargeButton: FC<ButtonProps> = (props) => {
   return <Button
-    // w={"8vmin"}
-    h={"8vmin"}
+    // w={"10px"}
+    maxH={"8vmin"}
     fontSize="8vmin"
     p={8}
     {...props} />
@@ -64,7 +64,8 @@ const Words: FC<{
   const [activeIndex, setActiveIndex] = useState(-1)
   const splitted: string[] = hepburn.splitKana(word)
   return <Grid
-    border="1px solid "
+    maxW="100%"
+    border="1px solid"
     borderRadius={"lg"}
     borderColor="gray.200"
     p={2}
@@ -81,8 +82,7 @@ const Words: FC<{
     }}>📣</LargeButton>
     <Grid
       gridTemplateColumns={`repeat(4, 1fr)`}
-      // gridAutoFlow="column"
-      gap={2}
+      gap={1}
     >
       {splitted.map((char, i) => {
         return <Tite char={char} key={i} isActive={i === activeIndex} />
@@ -106,7 +106,7 @@ export default function Home() {
         <title></title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Stack p={4} userSelect="none">
+      <Stack p={2} userSelect="none">
         {words.split(",").map((word, i) => {
           return <Words word={word} key={i} />
         })}
